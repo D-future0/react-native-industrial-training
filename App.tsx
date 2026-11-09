@@ -10,6 +10,7 @@ import {
   StatusBar,
   Image,
   useColorScheme,
+  useWindowDimensions,
   Linking
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -31,6 +32,10 @@ export const ThemeContext = createContext<{
 
 export default function App() {
   const [isAvailable, setIsAvailable] = useState(true);
+  const { width } = useWindowDimensions();
+  const isCompact = width < 360;
+  const isWide = width >= 600;
+  const horizontalPadding = isCompact ? 12 : width >= 1024 ? 32 : width >= 600 ? 20 : 16;
 
   const handleContact = () => {
     console.log("Contact button pressed");
@@ -82,7 +87,11 @@ export default function App() {
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
 
       <ScrollView
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[
+          styles.container,
+          !isWide && styles.containerNarrow,
+          { paddingHorizontal: horizontalPadding },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
@@ -123,13 +132,23 @@ export default function App() {
           </Pressable>
         </View>
 
+        <View style={[styles.mainLayout, isWide && styles.mainLayoutWide]}>
+          <View style={[styles.mainColumn, isWide && styles.mainColumnPrimary]}>
         {/* Profile */}
         <View style={[styles.profileCard, isDark && styles.cardDark]}>
           <View style={styles.avatar}>
             <Image source={require("./assets/collins-image.png")} style={styles.avatarImage} />
           </View>
 
-          <Text style={[styles.name, isDark && styles.textDark]}>Ifechukwu Collins Okafor</Text>
+          <Text
+            style={[
+              styles.name,
+              isCompact && styles.nameCompact,
+              isDark && styles.textDark,
+            ]}
+          >
+            Ifechukwu Collins Okafor
+          </Text>
 
           <Text style={styles.role}>
             Software Engineer
@@ -160,8 +179,10 @@ export default function App() {
 
           <SkillCard skills={skills} isDark={isDark} />
         </View>
+          </View>
 
         {/* Availability */}
+          <View style={[styles.mainColumn, isWide && styles.mainColumnSecondary]}>
         <View style={[styles.availabilityCard, isDark && styles.cardDark]}>
           <View style={styles.availabilityInfo}>
             <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
@@ -226,6 +247,8 @@ export default function App() {
             </View>
           </View>
         </View>
+          </View>
+        </View>
 
         {/* Footer */}
         <Text style={[styles.footer, isDark && styles.mutedTextDark]}>
@@ -247,12 +270,21 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    padding: 20,
+    width: "100%",
+    maxWidth: 1100,
+    alignSelf: "center",
+    paddingTop: 20,
     paddingBottom: 40,
+  },
+  containerNarrow: {
+    maxWidth: 900,
   },
 
   header: {
     flexDirection: "row",
+    flexWrap: "wrap",
+    minWidth: 0,
+    gap: 12,
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 30,
@@ -274,6 +306,22 @@ const styles = StyleSheet.create({
   },
   mutedTextDark: {
     color: "#CBD5E1",
+  },
+  mainLayout: {
+    gap: 24,
+  },
+  mainLayoutWide: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  mainColumn: {
+    minWidth: 0,
+  },
+  mainColumnPrimary: {
+    flex: 3,
+  },
+  mainColumnSecondary: {
+    flex: 2,
   },
 
   logo: {
@@ -343,6 +391,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "800",
     color: "#172554",
+    textAlign: "center",
+    width: "100%",
+  },
+  nameCompact: {
+    fontSize: 22,
   },
 
   role: {
@@ -424,6 +477,7 @@ const styles = StyleSheet.create({
 
   availabilityInfo: {
     flex: 1,
+    minWidth: 0,
     marginRight: 12,
   },
 
@@ -450,6 +504,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 17,
     paddingVertical: 10,
     borderRadius: 9,
+    flexShrink: 0,
   },
 
   toggleText: {
