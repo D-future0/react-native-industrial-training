@@ -1,11 +1,6 @@
 import { View, Text, Pressable, StyleSheet } from "react-native"
+import { AvailabilityProps } from "../types"
 
-type AvailabilityProps = {
-    isWide: string;
-    isDark: string;
-    isAvailable: boolean;
-    setIsAvailable: (value: boolean) => void;
-}
 export default function AvailabilityToggle({ isWide, isDark, isAvailable, setIsAvailable }: AvailabilityProps) {
     return (
         <View style={[styles.mainColumn, isWide && styles.mainColumnSecondary]}>

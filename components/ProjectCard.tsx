@@ -1,16 +1,6 @@
 import { View, Text, Pressable, Linking, StyleSheet, Image } from "react-native";
+import { ProjectCardProps } from "../types";
 
-type Project = {
-  title: string;
-  description: string;
-  imageUrl: string;
-  link: string;
-};
-
-type ProjectCardProps = {
-  projects: Project[];
-  isDark: boolean;
-};
 
 export default function ProjectCard({ projects, isDark }: ProjectCardProps) {
   return (

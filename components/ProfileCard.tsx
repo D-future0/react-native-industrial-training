@@ -1,9 +1,6 @@
 import {View, Text, Pressable, Linking, StyleSheet, Image} from "react-native"
+import { ProfileCardProps } from "../types"
 
-type ProfileCardProps = {
-  isDark?: boolean;
-  isCompact?: boolean;
-};
 export default function ProfileCard({ isDark, isCompact }: ProfileCardProps){
     return(
         <View style={[styles.profileCard, isDark && styles.cardDark]}>

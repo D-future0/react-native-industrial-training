@@ -1,9 +1,6 @@
 
 import { View, Text, StyleSheet } from 'react-native';
-type SkillCardProps = {
-  skills: string[];
-  isDark: boolean;
-};
+import { SkillCardProps } from '../types';
 
 export default function SkillCard({ skills, isDark }: SkillCardProps) {
     return (
