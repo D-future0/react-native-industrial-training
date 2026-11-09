@@ -1,6 +1,6 @@
 
-import { createContext, useState, useContext, useEffect } from "react";
-import SkillCard from "./SkillCard";
+import { createContext, useState,  useEffect } from "react";
+import SkillCard from "./components/SkillCard";
 import {
   View,
   Text,
@@ -8,22 +8,17 @@ import {
   ScrollView,
   StyleSheet,
   StatusBar,
-  Image,
   useColorScheme,
   useWindowDimensions,
-  Linking
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProfileCard from "./components/ProfileCard";
+import AvailabilityToggle from "./components/AvailabilityToggle";
+import skills from "./data/skills";
+import ProjectCard from "./components/ProjectCard";
+import projects from "./data/projects";
 
-const skills = [
-  "React Native",
-  "TypeScript",
-  "React",
-  "Next.js",
-  "Node.js",
-  "PostgreSQL",
-];
 
 export const ThemeContext = createContext<{
   isDark: boolean;
@@ -37,11 +32,8 @@ export default function App() {
   const isWide = width >= 600;
   const horizontalPadding = isCompact ? 12 : width >= 1024 ? 32 : width >= 600 ? 20 : 16;
 
-  const handleContact = () => {
-    console.log("Contact button pressed");
-  };
-  const systemTheme = useColorScheme(); 
-  
+  const systemTheme = useColorScheme();
+
   const [isDark, setIsDark] = useState(systemTheme === 'dark');
   const [isReady, setIsReady] = useState(false);
 
@@ -67,8 +59,8 @@ export default function App() {
   // Toggle the theme in state AND save it to storage
   const toggleTheme = async () => {
     const newThemeState = !isDark;
-    setIsDark(newThemeState); 
-    
+    setIsDark(newThemeState);
+
     try {
       await AsyncStorage.setItem('@app_theme', newThemeState ? 'dark' : 'light');
     } catch (error) {
@@ -76,186 +68,128 @@ export default function App() {
     }
   };
 
-  // Optional: Prevent rendering children until the theme is loaded from storage. This stops the app from flashing the wrong theme for a split second on launch
+  // Prevent rendering children until the theme is loaded from storage. This stops the app from flashing the wrong theme for a split second on launch
   if (!isReady) {
-    return null; 
+    return null;
   }
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-    <SafeAreaView style={[styles.safeArea, isDark && styles.safeAreaDark]}>
-      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+      <SafeAreaView style={[styles.safeArea, isDark && styles.safeAreaDark]}>
+        <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
 
-      <ScrollView
-        contentContainerStyle={[
-          styles.container,
-          !isWide && styles.containerNarrow,
-          { paddingHorizontal: horizontalPadding },
-        ]}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={[styles.logo, isDark && styles.textDark]}>DEVPROFILE</Text>
+        <ScrollView
+          contentContainerStyle={[
+            styles.container,
+            !isWide && styles.containerNarrow,
+            { paddingHorizontal: horizontalPadding },
+          ]}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <View style={styles.header}>
+            <Text style={[styles.logo, isDark && styles.textDark]}>DEVPROFILE</Text>
 
-          <View style={styles.statusBadge}>
-            <View
-              style={[
-                styles.statusDot,
-                !isAvailable && styles.unavailableDot,
-              ]}
-            />
+            <View style={styles.statusBadge}>
+              <View
+                style={[
+                  styles.statusDot,
+                  !isAvailable && styles.unavailableDot,
+                ]}
+              />
 
-            <Text style={styles.statusText}>
-              {isAvailable ? "Available" : "Unavailable"}
-            </Text>
-          </View>
-        </View>
-
-        <View style={[styles.themeCard, isDark && styles.cardDark]}>
-          <View style={styles.availabilityInfo}>
-            <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-              Appearance
-            </Text>
-            <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
-              {isDark ? "Dark mode is on" : "Light mode is on"}
-            </Text>
-          </View>
-          <Pressable
-            onPress={toggleTheme}
-            style={styles.toggleButton}
-            accessibilityRole="switch"
-            accessibilityLabel="Dark mode"
-            accessibilityState={{ checked: isDark }}
-          >
-            <Text style={styles.toggleText}>{isDark ? "ON" : "OFF"}</Text>
-          </Pressable>
-        </View>
-
-        <View style={[styles.mainLayout, isWide && styles.mainLayoutWide]}>
-          <View style={[styles.mainColumn, isWide && styles.mainColumnPrimary]}>
-        {/* Profile */}
-        <View style={[styles.profileCard, isDark && styles.cardDark]}>
-          <View style={styles.avatar}>
-            <Image source={require("./assets/collins-image.png")} style={styles.avatarImage} />
-          </View>
-
-          <Text
-            style={[
-              styles.name,
-              isCompact && styles.nameCompact,
-              isDark && styles.textDark,
-            ]}
-          >
-            Ifechukwu Collins Okafor
-          </Text>
-
-          <Text style={styles.role}>
-            Software Engineer
-          </Text>
-
-          <Text style={[styles.description, isDark && styles.mutedTextDark]}>
-            I build modern digital products and
-            scalable software solutions using
-            contemporary web and mobile technologies.
-          </Text>
-
-          <Pressable
-            style={styles.contactButton}
-            onPress={()=> Linking.openURL('mailto:ifechukwu@gmail.com')}
-            accessibilityRole="button"
-          >
-            <Text style={styles.contactButtonText}>
-              Contact Developer
-            </Text>
-          </Pressable>
-        </View>
-
-        {/* Skills */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
-            Technical Skills
-          </Text>
-
-          <SkillCard skills={skills} isDark={isDark} />
-        </View>
-          </View>
-
-        {/* Availability */}
-          <View style={[styles.mainColumn, isWide && styles.mainColumnSecondary]}>
-        <View style={[styles.availabilityCard, isDark && styles.cardDark]}>
-          <View style={styles.availabilityInfo}>
-            <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-              Work Availability
-            </Text>
-
-            <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
-              {isAvailable
-                ? "Currently open to opportunities."
-                : "Currently unavailable."}
-            </Text>
-          </View>
-
-          <Pressable
-            onPress={() => setIsAvailable((previous) => !previous)}
-            style={styles.toggleButton}
-            accessibilityRole="switch"
-            accessibilityState={{ checked: isAvailable }}
-          >
-            <Text style={styles.toggleText}>
-              {isAvailable ? "ON" : "OFF"}
-            </Text>
-          </Pressable>
-        </View>
-
-        {/* Professional Experience */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
-            Professional Experience
-          </Text>
-          <View style={styles.skillsContainer}>
-            <View style={styles.availabilityInfo}>
-              <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-                Nexsecure Cyber Ltd. <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2025 - Present)</Text>
-              </Text>
-
-              <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
-                Software Engineer
+              <Text style={styles.statusText}>
+                {isAvailable ? "Available" : "Unavailable"}
               </Text>
             </View>
           </View>
-          <View style={styles.skillsContainer}>
+
+          <View style={[styles.themeCard, isDark && styles.cardDark]}>
             <View style={styles.availabilityInfo}>
               <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-                Macklemore Solution Llc. <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2025)</Text>
+                Appearance
               </Text>
-
               <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
-                Web Developer
+                {isDark ? "Dark mode is on" : "Light mode is on"}
               </Text>
             </View>
+            <Pressable
+              onPress={toggleTheme}
+              style={styles.toggleButton}
+              accessibilityRole="switch"
+              accessibilityLabel="Dark mode"
+              accessibilityState={{ checked: isDark }}
+            >
+              <Text style={styles.toggleText}>{isDark ? "ON" : "OFF"}</Text>
+            </Pressable>
           </View>
-          <View style={styles.skillsContainer}>
-            <View style={styles.availabilityInfo}>
-              <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-                Sky Studio <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2024)</Text>
-              </Text>
 
-              <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
-                Frontend Developer
+          <View style={[styles.mainLayout, isWide && styles.mainLayoutWide]}>
+            <View style={[styles.mainColumn, isWide && styles.mainColumnPrimary]}>
+              {/* Profile */}
+              <ProfileCard isDark={isDark} isCompact={isCompact} />
+
+              {/* Skills */}
+              <View style={styles.section}>
+                <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
+                  Technical Skills
+                </Text>
+
+                <SkillCard skills={skills} isDark={isDark} />
+              </View>
+            </View>
+
+            {/* Availability */}
+            <AvailabilityToggle isWide={isWide ? "true" : "false"} isDark={isDark ? "true" : "false"} isAvailable={isAvailable} setIsAvailable={setIsAvailable} />
+
+            {/* Professional Experience */}
+            <View style={styles.section}>
+              <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
+                Professional Experience
               </Text>
+              <View style={styles.skillsContainer}>
+                <View style={styles.availabilityInfo}>
+                  <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
+                    Nexsecure Cyber Ltd. <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2025 - Present)</Text>
+                  </Text>
+
+                  <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
+                    Software Engineer
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.skillsContainer}>
+                <View style={styles.availabilityInfo}>
+                  <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
+                    Macklemore Solution Llc. <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2025)</Text>
+                  </Text>
+
+                  <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
+                    Web Developer
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.skillsContainer}>
+                <View style={styles.availabilityInfo}>
+                  <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
+                    Sky Studio <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2024)</Text>
+                  </Text>
+
+                  <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
+                    Frontend Developer
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
-        </View>
-          </View>
-        </View>
+          <ProjectCard projects={projects} isDark={isDark} />
 
-        {/* Footer */}
-        <Text style={[styles.footer, isDark && styles.mutedTextDark]}>
-          Built with React Native and TypeScript
-        </Text>
-      </ScrollView>
-    </SafeAreaView>
+          {/* Footer */}
+          <Text style={[styles.footer, isDark && styles.mutedTextDark]}>
+            Built with React Native and TypeScript
+          </Text>
+        </ScrollView>
+      </SafeAreaView>
     </ThemeContext.Provider>
   );
 }
@@ -366,15 +300,6 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
 
-  avatar: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: "#DBEAFE",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 18,
-  },
 
   avatarText: {
     fontSize: 30,
