@@ -5,7 +5,7 @@ export default function ProfileCard({ isDark, isCompact }: ProfileCardProps){
     return(
         <View style={[styles.profileCard, isDark && styles.cardDark]}>
           <View style={styles.avatar}>
-            <Image source={require("../assets/collins-image.png")} style={styles.avatarImage} />
+            <Image source={require("../assets/collins-image.webp")} style={styles.avatarImage} />
           </View>
 
           <Text

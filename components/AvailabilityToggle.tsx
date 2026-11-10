@@ -3,8 +3,11 @@ import { AvailabilityProps } from "../types"
 
 export default function AvailabilityToggle({ isWide, isDark, isAvailable, setIsAvailable }: AvailabilityProps) {
     return (
-        <View style={[styles.mainColumn, isWide && styles.mainColumnSecondary]}>
-            <View style={[styles.availabilityCard, isDark && styles.cardDark]}>
+            <View style={[
+                styles.availabilityCard,
+                isWide && styles.availabilityCardWide,
+                isDark && styles.cardDark,
+            ]}>
                 <View style={styles.availabilityInfo}>
                     <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
                         Work Availability
@@ -21,6 +24,7 @@ export default function AvailabilityToggle({ isWide, isDark, isAvailable, setIsA
                     onPress={() => setIsAvailable(!isAvailable)}
                     style={styles.toggleButton}
                     accessibilityRole="switch"
+                    accessibilityLabel="Work availability"
                     accessibilityState={{ checked: isAvailable }}
                 >
                     <Text style={styles.toggleText}>
@@ -28,7 +32,6 @@ export default function AvailabilityToggle({ isWide, isDark, isAvailable, setIsA
                     </Text>
                 </Pressable>
             </View>
-        </View>
     );
 }
 
@@ -42,15 +45,6 @@ const styles = StyleSheet.create({
     mutedTextDark: {
         color: "#CBD5E1",
     },
-    mainColumn: {
-        minWidth: 0,
-    },
-    mainColumnPrimary: {
-        flex: 3,
-    },
-    mainColumnSecondary: {
-        flex: 2,
-    },
     availabilityCard: {
         backgroundColor: "#FFFFFF",
         padding: 18,
@@ -59,6 +53,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+    },
+    availabilityCardWide: {
+        marginTop: 0,
     },
 
     availabilityInfo: {

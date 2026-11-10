@@ -16,13 +16,13 @@ export type ProfileCardProps = {
 };
 
 export type SkillCardProps = {
-  skills: string[];
+  skill: string;
   isDark: boolean;
 };
 
 export type AvailabilityProps = {
-    isWide: string;
-    isDark: string;
+    isWide: boolean;
+    isDark: boolean;
     isAvailable: boolean;
     setIsAvailable: (value: boolean) => void;
 }

@@ -18,18 +18,15 @@ import AvailabilityToggle from "./components/AvailabilityToggle";
 import skills from "./data/skills";
 import ProjectCard from "./components/ProjectCard";
 import projects from "./data/projects";
+import ProfessionalExperience from "./components/ProfessionalExperience";
+import professionalExperienceData from "./data/professionalExperience";
 
-
-export const ThemeContext = createContext<{
-  isDark: boolean;
-  toggleTheme: () => Promise<void>;
-} | null>(null);
 
 export default function App() {
   const [isAvailable, setIsAvailable] = useState(true);
   const { width } = useWindowDimensions();
   const isCompact = width < 360;
-  const isWide = width >= 600;
+  const isWide = width >= 820;
   const horizontalPadding = isCompact ? 12 : width >= 1024 ? 32 : width >= 600 ? 20 : 16;
 
   const systemTheme = useColorScheme();
@@ -74,7 +71,7 @@ export default function App() {
   }
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+
       <SafeAreaView style={[styles.safeArea, isDark && styles.safeAreaDark]}>
         <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
 
@@ -134,55 +131,38 @@ export default function App() {
                 <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
                   Technical Skills
                 </Text>
-
-                <SkillCard skills={skills} isDark={isDark} />
+                <View style={styles.skillsContainer}>
+                    {skills.map((skill) => (
+                <SkillCard key={skill} skill={skill} isDark={isDark} />
+                ))}
+                  </View>
               </View>
             </View>
 
-            {/* Availability */}
-            <AvailabilityToggle isWide={isWide ? "true" : "false"} isDark={isDark ? "true" : "false"} isAvailable={isAvailable} setIsAvailable={setIsAvailable} />
+            <View style={[styles.mainColumn, isWide && styles.mainColumnSecondary]}>
+              {/* Availability */}
+              <AvailabilityToggle isWide={isWide} isDark={isDark} isAvailable={isAvailable} setIsAvailable={setIsAvailable} />
 
-            {/* Professional Experience */}
-            <View style={styles.section}>
-              <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
-                Professional Experience
-              </Text>
-              <View style={styles.skillsContainer}>
-                <View style={styles.availabilityInfo}>
-                  <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-                    Nexsecure Cyber Ltd. <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2025 - Present)</Text>
+              {/* Professional Experience */}
+              <View style={styles.section}>
+                  <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
+                    Professional Experience
                   </Text>
-
-                  <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
-                    Software Engineer
-                  </Text>
-                </View>
+                  {professionalExperienceData.map((exp, index) => (
+                    <ProfessionalExperience
+                      key={exp.company + index}
+                      isDark={isDark}
+                      company={exp.company}
+                      years={exp.years}
+                      role={exp.role}
+                    />
+                  ))}
               </View>
-              <View style={styles.skillsContainer}>
-                <View style={styles.availabilityInfo}>
-                  <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-                    Macklemore Solution Llc. <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2025)</Text>
-                  </Text>
 
-                  <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
-                    Web Developer
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.skillsContainer}>
-                <View style={styles.availabilityInfo}>
-                  <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-                    Sky Studio <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>(2024)</Text>
-                  </Text>
-
-                  <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
-                    Frontend Developer
-                  </Text>
-                </View>
-              </View>
+              {/* Projects */}
+              <ProjectCard projects={projects} isDark={isDark} />
             </View>
           </View>
-          <ProjectCard projects={projects} isDark={isDark} />
 
           {/* Footer */}
           <Text style={[styles.footer, isDark && styles.mutedTextDark]}>
@@ -190,7 +170,7 @@ export default function App() {
           </Text>
         </ScrollView>
       </SafeAreaView>
-    </ThemeContext.Provider>
+
   );
 }
 

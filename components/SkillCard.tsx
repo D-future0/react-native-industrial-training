@@ -2,18 +2,13 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { SkillCardProps } from '../types';
 
-export default function SkillCard({ skills, isDark }: SkillCardProps) {
+export default function SkillCard({ skill, isDark }: SkillCardProps) {
     return (
-        
-                  <View style={styles.skillsContainer}>
-                    {skills.map((skill) => (
                       <View key={skill} style={[styles.skillItem, isDark && styles.skillItemDark]}>
                         <Text style={[styles.skillText, isDark && styles.skillTextDark]}>
                           {skill}
                         </Text>
                       </View>
-                    ))}
-                  </View>
     );}
 
     const styles = StyleSheet.create({
