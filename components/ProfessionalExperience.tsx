@@ -1,16 +1,18 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
 type ProfessionalExperienceProps = {
   isDark: boolean;
+  image: string;
   company: string;
   years: string;
     role: string;
 };
 
-export default function ProfessionalExperience({ isDark, company, years, role }: ProfessionalExperienceProps) {
+export default function ProfessionalExperience({ isDark, image, company, years, role }: ProfessionalExperienceProps) {
     return (
         <View style={styles.skillsContainer}>
                 <View style={styles.availabilityInfo}>
+                    <Image source={{ uri: image }} style={{ width: 50, height: 50, borderRadius: 25, marginBottom: 8 }} />
                   <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
                     {company} <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>({years})</Text>
                   </Text>
