@@ -1,7 +1,9 @@
 import { View, Text, Pressable, StyleSheet } from "react-native"
 import { AvailabilityProps } from "../types"
+import { useTheme } from "../lib/ThemeContext";
 
-export default function AvailabilityToggle({ isWide, isDark, isAvailable, setIsAvailable }: AvailabilityProps) {
+export default function AvailabilityToggle({ isWide, isAvailable, setIsAvailable }: AvailabilityProps) {
+    const { isDark } = useTheme();
     return (
             <View style={[
                 styles.availabilityCard,
@@ -21,7 +23,7 @@ export default function AvailabilityToggle({ isWide, isDark, isAvailable, setIsA
                 </View>
 
                 <Pressable
-                    onPress={() => setIsAvailable(!isAvailable)}
+                    onPress={() => setIsAvailable((previous) => !previous)}
                     style={styles.toggleButton}
                     accessibilityRole="switch"
                     accessibilityLabel="Work availability"
@@ -75,13 +77,6 @@ const styles = StyleSheet.create({
         color: "#64748B",
         marginTop: 6,
     },
-    availabilitySubtitle: {
-        fontSize: 12,
-        color: "#64748B",
-        fontWeight: "400",
-        fontStyle: "italic",
-    },
-
     toggleButton: {
         backgroundColor: "#1D4ED8",
         paddingHorizontal: 17,

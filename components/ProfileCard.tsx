@@ -1,7 +1,9 @@
 import {View, Text, Pressable, Linking, StyleSheet, Image} from "react-native"
 import { ProfileCardProps } from "../types"
+import { useTheme } from "../lib/ThemeContext";
 
-export default function ProfileCard({ isDark, isCompact }: ProfileCardProps){
+export default function ProfileCard({ isCompact }: ProfileCardProps){
+    const { isDark } = useTheme();
     return(
         <View style={[styles.profileCard, isDark && styles.cardDark]}>
           <View style={styles.avatar}>
@@ -52,10 +54,6 @@ const styles = StyleSheet.create({
   mutedTextDark: {
     color: "#CBD5E1",
   },
-  mainLayout: {
-    gap: 24,
-  },
-
     profileCard: {
     backgroundColor: "#FFFFFF",
     padding: 24,
@@ -121,7 +119,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  section: {
-    marginTop: 30,
-  },
 })

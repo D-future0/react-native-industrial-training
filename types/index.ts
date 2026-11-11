@@ -1,28 +1,28 @@
-type Project = {
+
+
+export type Project = {
   title: string;
   description: string;
-  imageUrl: string;
+  technology: string;
   link: string;
 };
 
-export type ProjectCardProps = {
-  projects: Project[];
-  isDark: boolean;
-};
-
 export type ProfileCardProps = {
-  isDark?: boolean;
   isCompact?: boolean;
 };
 
 export type SkillCardProps = {
   skill: string;
-  isDark: boolean;
 };
 
 export type AvailabilityProps = {
     isWide: boolean;
-    isDark: boolean;
     isAvailable: boolean;
-    setIsAvailable: (value: boolean) => void;
-}
+    setIsAvailable: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type ProfessionalExperienceProps = {
+  company: string;
+  years: string;
+  role: string;
+};

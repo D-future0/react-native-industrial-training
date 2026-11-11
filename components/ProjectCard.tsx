@@ -1,21 +1,23 @@
-import { View, Text, Pressable, Linking, StyleSheet, Image } from "react-native";
-import { ProjectCardProps } from "../types";
+import { View, Text, Pressable, Linking, StyleSheet } from "react-native";
+import { Project } from "../types";
+import { useTheme } from "../lib/ThemeContext";
 
 
-export default function ProjectCard({ projects, isDark }: ProjectCardProps) {
+export default function ProjectCard({ project }: { project: Project }) {
+  const { isDark } = useTheme();
   return (
-    <View style={styles.container}>
-      {projects.map((project) => (
         <View
           key={project.title}
           style={[styles.card, isDark && styles.cardDark]}
         >
-          <Image source={{ uri: project.imageUrl }} style={styles.image} />
           <Text style={[styles.title, isDark && styles.textDark]}>
             {project.title}
           </Text>
           <Text style={[styles.description, isDark && styles.descriptionDark]}>
             {project.description}
+          </Text>
+          <Text style={[styles.description, isDark && styles.descriptionDark]}>
+            <Text style={{ fontWeight: "bold" }}>Technologies:</Text> {project.technology}
           </Text>
           <Pressable
             style={styles.button}
@@ -25,15 +27,10 @@ export default function ProjectCard({ projects, isDark }: ProjectCardProps) {
             <Text style={styles.buttonText}>View Project</Text>
           </Pressable>
         </View>
-      ))}
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-  },
   card: {
     width: "100%",
     backgroundColor: "#FFFFFF",
@@ -49,12 +46,6 @@ const styles = StyleSheet.create({
   },
   cardDark: {
     backgroundColor: "#1E293B",
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-    marginBottom: 12,
   },
   title: {
     color: "#172554",

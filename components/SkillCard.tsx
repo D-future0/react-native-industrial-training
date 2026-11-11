@@ -1,8 +1,10 @@
 
 import { View, Text, StyleSheet } from 'react-native';
 import { SkillCardProps } from '../types';
+import { useTheme } from '../lib/ThemeContext';
 
-export default function SkillCard({ skill, isDark }: SkillCardProps) {
+export default function SkillCard({ skill }: SkillCardProps) {
+    const { isDark } = useTheme();
     return (
                       <View key={skill} style={[styles.skillItem, isDark && styles.skillItemDark]}>
                         <Text style={[styles.skillText, isDark && styles.skillTextDark]}>
@@ -12,12 +14,6 @@ export default function SkillCard({ skill, isDark }: SkillCardProps) {
     );}
 
     const styles = StyleSheet.create({
-    skillsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-  },
-
   skillItem: {
     backgroundColor: "#E0E7FF",
     paddingHorizontal: 14,
