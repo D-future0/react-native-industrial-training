@@ -19,6 +19,9 @@ type ThemeColors = {
   text: string;
   mutedText: string;
   primary: string;
+  accentSurface: string;
+  accentText: string;
+  inverseText: string;
 };
 
 type ThemeContextValue = {
@@ -33,6 +36,9 @@ const lightColors: ThemeColors = {
   text: "#172554",
   mutedText: "#64748B",
   primary: "#1D4ED8",
+  accentSurface: "#E0E7FF",
+  accentText: "#3730A3",
+  inverseText: "#FFFFFF",
 };
 
 const darkColors: ThemeColors = {
@@ -41,6 +47,9 @@ const darkColors: ThemeColors = {
   text: "#F8FAFC",
   mutedText: "#CBD5E1",
   primary: "#60A5FA",
+  accentSurface: "#312E81",
+  accentText: "#E0E7FF",
+  inverseText: "#FFFFFF",
 };
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);

@@ -16,9 +16,8 @@ export type SkillCardProps = {
 };
 
 export type AvailabilityProps = {
-    isWide: boolean;
-    isAvailable: boolean;
-    setIsAvailable: React.Dispatch<React.SetStateAction<boolean>>;
+  isWide: boolean;
+  onAvailabilityChange: (isAvailable: boolean) => void;
 };
 
 export type ProfessionalExperienceProps = {

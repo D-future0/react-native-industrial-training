@@ -22,8 +22,9 @@ import { useTheme } from "../lib/ThemeContext";
 
 
 export default function ProfileScreen() {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark, colors, toggleTheme } = useTheme();
   const [isAvailable, setIsAvailable] = useState(true);
+
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const availableWidth = width - insets.left - insets.right;
@@ -36,7 +37,7 @@ export default function ProfileScreen() {
 
       <SafeAreaView
         edges={["top", "right", "bottom", "left"]}
-        style={[styles.safeArea, isDark && styles.safeAreaDark]}
+        style={[styles.safeArea, { backgroundColor: colors.background }]}
       >
         <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
 
@@ -50,7 +51,7 @@ export default function ProfileScreen() {
         >
           {/* Header */}
           <View style={styles.header}>
-            <Text style={[styles.logo, isDark && styles.textDark]}>DEVPROFILE</Text>
+            <Text style={[styles.logo, { color: colors.text }]}>DEVPROFILE</Text>
 
             <View style={styles.statusBadge}>
               <View
@@ -66,23 +67,23 @@ export default function ProfileScreen() {
             </View>
           </View>
 
-          <View style={[styles.themeCard, isDark && styles.cardDark]}>
+          <View style={[styles.themeCard, { backgroundColor: colors.surface }]}>
             <View style={styles.availabilityInfo}>
-              <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
+              <Text style={[styles.availabilityTitle, { color: colors.text }]}>
                 Appearance
               </Text>
-              <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
+              <Text style={[styles.availabilityDescription, { color: colors.mutedText }]}>
                 {isDark ? "Dark mode is on" : "Light mode is on"}
               </Text>
             </View>
             <Pressable
               onPress={toggleTheme}
-              style={styles.toggleButton}
+              style={[styles.toggleButton, { backgroundColor: colors.primary }]}
               accessibilityRole="switch"
               accessibilityLabel="Dark mode"
               accessibilityState={{ checked: isDark }}
             >
-              <Text style={styles.toggleText}>{isDark ? "ON" : "OFF"}</Text>
+              <Text style={[styles.toggleText, { color: colors.inverseText }]}>{isDark ? "ON" : "OFF"}</Text>
             </Pressable>
           </View>
 
@@ -93,7 +94,7 @@ export default function ProfileScreen() {
 
               {/* Skills */}
               <View style={styles.section}>
-                <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>
                   Technical Skills
                 </Text>
                 <View style={styles.skillsContainer}>
@@ -106,11 +107,14 @@ export default function ProfileScreen() {
 
             <View style={[styles.mainColumn, isWide && styles.mainColumnSecondary]}>
               {/* Availability */}
-              <AvailabilityToggle isWide={isWide} isAvailable={isAvailable} setIsAvailable={setIsAvailable} />
+              <AvailabilityToggle
+                isWide={isWide}
+                onAvailabilityChange={setIsAvailable}
+              />
 
               {/* Professional Experience */}
               <View style={styles.section}>
-                  <Text style={[styles.sectionTitle, isDark && styles.textDark]}>
+                  <Text style={[styles.sectionTitle, { color: colors.text }]}>
                     Professional Experience
                   </Text>
                   {professionalExperienceData.map((exp, index) => (
@@ -129,7 +133,7 @@ export default function ProfileScreen() {
           </View>
 
           {/* Footer */}
-          <Text style={[styles.footer, isDark && styles.mutedTextDark]}>
+          <Text style={[styles.footer, { color: colors.mutedText }]}>
             Built with React Native and TypeScript
           </Text>
         </ScrollView>
@@ -143,10 +147,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5F7FA",
   },
-  safeAreaDark: {
-    backgroundColor: "#0F172A",
-  },
-
   container: {
     width: "100%",
     maxWidth: 1100,
@@ -179,15 +179,6 @@ const styles = StyleSheet.create({
   },
   section: {
     marginTop: 30,
-  },
-  cardDark: {
-    backgroundColor: "#1E293B",
-  },
-  textDark: {
-    color: "#F8FAFC",
-  },
-  mutedTextDark: {
-    color: "#CBD5E1",
   },
   mainLayout: {
     gap: 24,

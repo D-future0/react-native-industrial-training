@@ -1,18 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { ProfessionalExperienceProps } from '../types';
+import type { ProfessionalExperienceProps } from '../types';
 import { useTheme } from '../lib/ThemeContext';
 
 
 export default function ProfessionalExperience({ company, years, role }: ProfessionalExperienceProps) {
-    const { isDark } = useTheme();
+    const { colors } = useTheme();
     return (
         <View style={styles.skillsContainer}>
                 <View style={styles.availabilityInfo}>
-                  <Text style={[styles.availabilityTitle, isDark && styles.textDark]}>
-                    {company} <Text style={[styles.availabilitySubtitle, isDark && styles.mutedTextDark]}>({years})</Text>
+                  <Text style={[styles.availabilityTitle, { color: colors.text }]}>
+                    {company} <Text style={[styles.availabilitySubtitle, { color: colors.mutedText }]}>({years})</Text>
                   </Text>
 
-                  <Text style={[styles.availabilityDescription, isDark && styles.mutedTextDark]}>
+                  <Text style={[styles.availabilityDescription, { color: colors.mutedText }]}>
                     {role}
                   </Text>
                 </View>
@@ -41,11 +41,5 @@ const styles = StyleSheet.create({
     availabilityDescription: {
     fontSize: 14,
     color: "#6B7280",
-  },
-    textDark: {
-    color: "#E0E7FF",
-  },
-    mutedTextDark: {
-    color: "#9CA3AF",
   },
 })

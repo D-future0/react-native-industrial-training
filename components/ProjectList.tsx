@@ -1,18 +1,17 @@
-import { FlatList, Text, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import projects from "../data/projects";
 import ProjectCard from "./ProjectCard";
 import { useTheme } from "../lib/ThemeContext";
 
 export default function ProjectList() {
-  const { isDark } = useTheme();
+  const { colors } = useTheme();
   return (
-    <FlatList
-      style={styles.section}
-      data={projects}
-      keyExtractor={(item) => item.title}
-      renderItem={({ item }) => <ProjectCard project={item} />}
-      ListHeaderComponent={<Text style={[styles.title, isDark && styles.textDark]}>My Projects</Text>}
-    />
+    <View style={styles.section}>
+      <Text style={[styles.title, { color: colors.text }]}>My Projects</Text>
+      {projects.map((project) => (
+        <ProjectCard key={project.title} project={project} />
+      ))}
+    </View>
   );
 }
 
@@ -21,13 +20,9 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   title: {
-    color: "#172554",
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 6,
     textAlign: "left",
-  },
-  textDark: {
-    color: "#F8FAFC",
   },
 });

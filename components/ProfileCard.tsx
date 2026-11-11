@@ -1,11 +1,11 @@
 import {View, Text, Pressable, Linking, StyleSheet, Image} from "react-native"
-import { ProfileCardProps } from "../types"
+import type { ProfileCardProps } from "../types"
 import { useTheme } from "../lib/ThemeContext";
 
 export default function ProfileCard({ isCompact }: ProfileCardProps){
-    const { isDark } = useTheme();
+    const { colors } = useTheme();
     return(
-        <View style={[styles.profileCard, isDark && styles.cardDark]}>
+        <View style={[styles.profileCard, { backgroundColor: colors.surface }]}>
           <View style={styles.avatar}>
             <Image source={require("../assets/collins-image.webp")} style={styles.avatarImage} />
           </View>
@@ -14,17 +14,17 @@ export default function ProfileCard({ isCompact }: ProfileCardProps){
             style={[
               styles.name,
               isCompact && styles.nameCompact,
-              isDark && styles.textDark,
+              { color: colors.text },
             ]}
           >
             Ifechukwu Collins Okafor
           </Text>
 
-          <Text style={styles.role}>
+          <Text style={[styles.role, { color: colors.primary }]}>
             Software Engineer
           </Text>
 
-          <Text style={[styles.description, isDark && styles.mutedTextDark]}>
+          <Text style={[styles.description, { color: colors.mutedText }]}>
             I build modern digital products and
             scalable software solutions using
             contemporary web and mobile technologies.
@@ -45,15 +45,6 @@ export default function ProfileCard({ isCompact }: ProfileCardProps){
 
 const styles = StyleSheet.create({
     
-    cardDark: {
-    backgroundColor: "#1E293B",
-  },
-  textDark: {
-    color: "#F8FAFC",
-  },
-  mutedTextDark: {
-    color: "#CBD5E1",
-  },
     profileCard: {
     backgroundColor: "#FFFFFF",
     padding: 24,

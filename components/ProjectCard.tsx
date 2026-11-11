@@ -1,30 +1,30 @@
 import { View, Text, Pressable, Linking, StyleSheet } from "react-native";
-import { Project } from "../types";
+import type { Project } from "../types";
 import { useTheme } from "../lib/ThemeContext";
 
 
 export default function ProjectCard({ project }: { project: Project }) {
-  const { isDark } = useTheme();
+  const { colors } = useTheme();
   return (
         <View
           key={project.title}
-          style={[styles.card, isDark && styles.cardDark]}
+          style={[styles.card, { backgroundColor: colors.surface }]}
         >
-          <Text style={[styles.title, isDark && styles.textDark]}>
+          <Text style={[styles.title, { color: colors.text }]}>
             {project.title}
           </Text>
-          <Text style={[styles.description, isDark && styles.descriptionDark]}>
+          <Text style={[styles.description, { color: colors.mutedText }]}>
             {project.description}
           </Text>
-          <Text style={[styles.description, isDark && styles.descriptionDark]}>
+          <Text style={[styles.description, { color: colors.mutedText }]}>
             <Text style={{ fontWeight: "bold" }}>Technologies:</Text> {project.technology}
           </Text>
           <Pressable
-            style={styles.button}
+            style={[styles.button, { backgroundColor: colors.primary }]}
             onPress={() => Linking.openURL(project.link)}
             accessibilityRole="link"
           >
-            <Text style={styles.buttonText}>View Project</Text>
+            <Text style={[styles.buttonText, { color: colors.inverseText }]}>View Project</Text>
           </Pressable>
         </View>
   );
@@ -44,30 +44,18 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  cardDark: {
-    backgroundColor: "#1E293B",
-  },
   title: {
-    color: "#172554",
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 6,
     textAlign: "left",
   },
-  textDark: {
-    color: "#F8FAFC",
-  },
   description: {
-    color: "#555555",
     fontSize: 14,
     marginBottom: 12,
     textAlign: "left",
   },
-  descriptionDark: {
-    color: "#CBD5E1",
-  },
   button: {
-    backgroundColor: "#007BFF",
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 5,

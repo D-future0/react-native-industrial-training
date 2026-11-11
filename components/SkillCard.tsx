@@ -1,13 +1,13 @@
 
 import { View, Text, StyleSheet } from 'react-native';
-import { SkillCardProps } from '../types';
+import type { SkillCardProps } from '../types';
 import { useTheme } from '../lib/ThemeContext';
 
 export default function SkillCard({ skill }: SkillCardProps) {
-    const { isDark } = useTheme();
+    const { colors } = useTheme();
     return (
-                      <View key={skill} style={[styles.skillItem, isDark && styles.skillItemDark]}>
-                        <Text style={[styles.skillText, isDark && styles.skillTextDark]}>
+                      <View key={skill} style={[styles.skillItem, { backgroundColor: colors.accentSurface }]}>
+                        <Text style={[styles.skillText, { color: colors.accentText }]}>
                           {skill}
                         </Text>
                       </View>
@@ -20,16 +20,8 @@ export default function SkillCard({ skill }: SkillCardProps) {
     paddingVertical: 10,
     borderRadius: 10,
   },
-  skillItemDark: {
-    backgroundColor: "#312E81",
-  },
-
   skillText: {
-    color: "#3730A3",
     fontSize: 12,
     fontWeight: "600",
-  },
-  skillTextDark: {
-    color: "#E0E7FF",
   },
     });
